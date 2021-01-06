@@ -97,7 +97,9 @@ def org_img():
 
 def to_clip():
     root.clipboard_clear()
-    root.clipboard_append(textwidget.get("0.0","end"))
+    txt = textwidget.get("0.0","end")
+    txt = txt.strip()
+    root.clipboard_append(txt)
 #
 
 def linksite():
