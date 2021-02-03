@@ -7,6 +7,8 @@ import pytesseract
 from tkinter import *
 from tkinter import ttk
 import webbrowser
+import tempfile
+import subprocess
 
 root = Tk()
 
@@ -102,6 +104,17 @@ def to_clip():
     root.clipboard_append(txt)
 #
 
+def to_notepad():
+    fd = tempfile.TemporaryDirectory()
+    fp = open(fd.name + "\\tempfile.txt", "w")
+    txt = textwidget.get("0.0","end")
+    txt = txt.strip()
+    fp.write(txt)
+    subprocess.Popen(["notepad", fp.name])
+    fp.close
+    fd.cleanup
+#
+
 def linksite():
     webbrowser.open('https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html')
 #
@@ -124,6 +137,7 @@ finally:
 
     ttk.Button(frame, text="Retry", command=org_img).grid(column=2, row=6, sticky=(W, E))
     ttk.Button(frame, text="Copy", command=to_clip).grid(column=3, row=6, sticky=(W, E))
+    ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=6, sticky=(W, E))
     ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E))
 
     root.mainloop()
