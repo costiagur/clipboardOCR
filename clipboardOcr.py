@@ -13,7 +13,7 @@ import subprocess
 root = Tk()
 
 ocr_str = StringVar()
-rollangle = IntVar()
+rollangle = DoubleVar()
 enlargerate = IntVar()
 brightnessrate = DoubleVar()
 contrastrate = DoubleVar()
@@ -135,9 +135,9 @@ finally:
     ttk.Entry(frame, width=3, textvariable=contrastrate).grid(column=3, row=4, sticky=(W, E))
     ttk.Entry(frame, width=8, textvariable=langset).grid(column=3, row=5, sticky=(W, E))
 
-    ttk.Button(frame, text="Retry", command=org_img).grid(column=2, row=6, sticky=(W, E))
-    ttk.Button(frame, text="Copy", command=to_clip).grid(column=3, row=6, sticky=(W, E))
-    ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=6, sticky=(W, E))
-    ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E))
+    ttk.Button(frame, text="Retry", command=org_img).grid(column=2, row=6, sticky=(W, E, N))
+    ttk.Button(frame, text="Copy", command=to_clip).grid(column=3, row=6, sticky=(W, E, N))
+    ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=6, sticky=(W, E, N))
+    ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E, N))
 
     root.mainloop()
