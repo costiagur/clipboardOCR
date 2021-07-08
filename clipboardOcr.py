@@ -97,14 +97,14 @@ def org_img(event=None):
     imglbl.image = tkimg  #update img in image label "imglbl"
 #
 
-def to_clip():
+def to_clip(event=None):
     root.clipboard_clear()
     txt = textwidget.get("0.0","end")
     txt = txt.strip()
     root.clipboard_append(txt)
 #
 
-def to_notepad():
+def to_notepad(event=None):
     fd = tempfile.TemporaryDirectory()
     fp = open(fd.name + "\\tempfile.txt", "w", encoding="utf-8")
     txt = textwidget.get("0.0","end")
@@ -141,5 +141,7 @@ finally:
     ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E, N))
 
     root.bind('<Return>',org_img)
+    root.bind('<Control-c>',to_clip)
+    root.bind('<Control-N>',to_notepad)
     
     root.mainloop()
