@@ -36,7 +36,7 @@ imglbl = ttk.Label(frame, image=tkimg, width=1)
 imglbl.grid(column=1, row=6, sticky=(W, E))
 
 
-def org_img():
+def org_img(event=None):
     
     img = ImageGrab.grabclipboard()
 
@@ -140,4 +140,6 @@ finally:
     ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=6, sticky=(W, E, N))
     ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E, N))
 
+    root.bind('<Return>',org_img)
+    
     root.mainloop()
