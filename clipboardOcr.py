@@ -106,7 +106,7 @@ def to_clip():
 
 def to_notepad():
     fd = tempfile.TemporaryDirectory()
-    fp = open(fd.name + "\\tempfile.txt", "w")
+    fp = open(fd.name + "\\tempfile.txt", "w", encoding="utf-8")
     txt = textwidget.get("0.0","end")
     txt = txt.strip()
     fp.write(txt)
