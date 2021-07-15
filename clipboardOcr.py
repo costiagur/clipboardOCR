@@ -12,6 +12,8 @@ import subprocess
 
 root = Tk()
 
+root.title("Clipboard OCR")
+
 ocr_str = StringVar()
 rollangle = DoubleVar()
 enlargerate = IntVar()
@@ -19,21 +21,23 @@ brightnessrate = DoubleVar()
 contrastrate = DoubleVar()
 langset = StringVar()
 tkimg = ""
+configs = StringVar()
 
 rollangle.set(0)
 enlargerate.set(2)
 brightnessrate.set(1.0)
 contrastrate.set(1.0)
 langset.set('heb')
+configs.set('--textord_tablefind_recognize_tables')
 
 frame = ttk.Frame(root, padding=(5,5,5,5))
 frame.grid(column=0, row=0, sticky=(N, W, E, S))
 
 textwidget = Text(frame, width=100, height=10)
-textwidget.grid(column=1, row=1, rowspan=5, sticky=(W, E))
+textwidget.grid(column=1, row=1, rowspan=5, sticky=(W, E),padx=(2,4),pady=(1,3))
 
 imglbl = ttk.Label(frame, image=tkimg, width=1)
-imglbl.grid(column=1, row=6, sticky=(W, E))
+imglbl.grid(column=1, row=7, sticky=(W, E))
 
 
 def org_img(event=None):
@@ -74,7 +78,7 @@ def org_img(event=None):
     elif langset.get() != '':
         addlang = langset.get()
     #
-    ocr_str.set(pytesseract.image_to_string(img, lang='eng'+addlang)) #do OCR
+    ocr_str.set(pytesseract.image_to_string(img, lang='eng'+addlang, config='--psm 11 ' + configs.get())) #do OCR
 
     textwidget.delete("0.0","end") #remove existing text
 
@@ -123,25 +127,27 @@ try:
     org_img() #run first time
 #
 finally:
-    ttk.Label(frame, text="Roll angle", padding=(2,2,2,2)).grid(column=2, row=1, sticky=W)
-    ttk.Label(frame, text="Enlarge by", padding=(2,2,2,2)).grid(column=2, row=2, sticky=W)
-    ttk.Label(frame, text="Brighten by", padding=(2,2,2,2)).grid(column=2, row=3, sticky=W)
-    ttk.Label(frame, text="Contrast by", padding=(2,2,2,2)).grid(column=2, row=4, sticky=W)
-    ttk.Label(frame, text="OCR langs", padding=(2,2,2,2)).grid(column=2, row=5, sticky=W)
+    ttk.Label(frame, text="Roll angle", padding=(2,2,3,2)).grid(column=2, row=1, sticky=W)
+    ttk.Label(frame, text="Enlarge by", padding=(2,2,3,2)).grid(column=2, row=2, sticky=W)
+    ttk.Label(frame, text="Brighten by", padding=(2,2,3,2)).grid(column=2, row=3, sticky=W)
+    ttk.Label(frame, text="Contrast by", padding=(2,2,3,2)).grid(column=2, row=4, sticky=W)
+    ttk.Label(frame, text="OCR langs", padding=(2,2,3,2)).grid(column=2, row=5, sticky=W)
+    ttk.Label(frame, text="Configurations", padding=(2,2,3,2)).grid(column=2, row=6, sticky=W)
 
-    ttk.Entry(frame, width=3, textvariable=rollangle).grid(column=3, row=1, sticky=(W, E))
-    ttk.Entry(frame, width=2, textvariable=enlargerate).grid(column=3, row=2, sticky=(W, E))
-    ttk.Entry(frame, width=3, textvariable=brightnessrate).grid(column=3, row=3, sticky=(W, E))
-    ttk.Entry(frame, width=3, textvariable=contrastrate).grid(column=3, row=4, sticky=(W, E))
-    ttk.Entry(frame, width=8, textvariable=langset).grid(column=3, row=5, sticky=(W, E))
+    ttk.Entry(frame, width=3, textvariable=rollangle).grid(column=3, row=1, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=2, textvariable=enlargerate).grid(column=3, row=2, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=3, textvariable=brightnessrate).grid(column=3, row=3, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=3, textvariable=contrastrate).grid(column=3, row=4, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=8, textvariable=langset).grid(column=3, row=5, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=15, textvariable=configs).grid(column=3, row=6, sticky=(W, E), padx=(2,2))
 
-    ttk.Button(frame, text="Retry", command=org_img).grid(column=2, row=6, sticky=(W, E, N))
-    ttk.Button(frame, text="Copy", command=to_clip).grid(column=3, row=6, sticky=(W, E, N))
-    ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=6, sticky=(W, E, N))
-    ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E, N))
+    ttk.Button(frame, text="Retry", command=org_img).grid(column=4, row=1, sticky=(W, E))
+    ttk.Button(frame, text="Copy", command=to_clip).grid(column=4, row=2, sticky=(W, E))
+    ttk.Button(frame, text="Notepad", command=to_notepad).grid(column=4, row=3, sticky=(W, E))
+    ttk.Button(frame, text="OCR langs", command=linksite).grid(column=4, row=5, sticky=(W, E))
 
     root.bind('<Return>',org_img)
     root.bind('<Control-c>',to_clip)
     root.bind('<Control-N>',to_notepad)
-    
+
     root.mainloop()
