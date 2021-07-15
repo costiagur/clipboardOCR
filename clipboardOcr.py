@@ -78,7 +78,14 @@ def org_img(event=None):
     elif langset.get() != '':
         addlang = langset.get()
     #
-    ocr_str.set(pytesseract.image_to_string(img, lang='eng'+addlang, config='--psm 11 ' + configs.get())) #do OCR
+
+    addconfigs = ''
+
+    if configs.get() != '':
+        addconfigs = ' ' + configs.get()
+    #
+
+    ocr_str.set(pytesseract.image_to_string(img, lang='eng'+addlang, config=addconfigs)) #do OCR
 
     textwidget.delete("0.0","end") #remove existing text
 
@@ -139,7 +146,7 @@ finally:
     ttk.Entry(frame, width=3, textvariable=brightnessrate).grid(column=3, row=3, sticky=(W, E), padx=(2,2))
     ttk.Entry(frame, width=3, textvariable=contrastrate).grid(column=3, row=4, sticky=(W, E), padx=(2,2))
     ttk.Entry(frame, width=8, textvariable=langset).grid(column=3, row=5, sticky=(W, E), padx=(2,2))
-    ttk.Entry(frame, width=15, textvariable=configs).grid(column=3, row=6, sticky=(W, E), padx=(2,2))
+    ttk.Entry(frame, width=20, textvariable=configs).grid(column=3, row=6, sticky=(W, E), padx=(2,2))
 
     ttk.Button(frame, text="Retry", command=org_img).grid(column=4, row=1, sticky=(W, E))
     ttk.Button(frame, text="Copy", command=to_clip).grid(column=4, row=2, sticky=(W, E))
