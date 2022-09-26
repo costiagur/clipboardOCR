@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>OCRit</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"> 
+
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  </head>
+
+  <body data-codeword="ocrit">
+
+    <div class="w3-container w3-cell" id="res_div">
+      <div class="w3-card">
+        <textarea id="res_txt" cols="100" rows="10" wrap="soft" style="width:1000px"></textarea>
+      </div>
+      <br>
+      <div>
+        <canvas id="canvas" height="500px" width="1000px" style="border:1px solid #000000;"></canvas>
+      </div>
+    </div>
+
+    <div class="w3-container w3-cell">
+      <div class="w3-container">
+      <table>
+        <tr>
+          <td>Brighten</td>
+          <td><input type="number" class="w3-input" value="1" id="brighten_in"></td>
+        </tr>
+        <tr>
+          <td>Enlarge</td>
+          <td><input type="number" class="w3-input" value="2" id="enlarge_in"></td>
+        </tr>
+        <tr>
+          <td>Rollangle</td>
+          <td><input type="number" class="w3-input" value="0" id="rollangle_in"></td>
+        </tr>
+        <tr>
+          <td><a href="https://tesseract-ocr.github.io/tessdoc/Data-Files-in-different-versions.html" target="_blank">Language</a></td>
+          <td><input type="text" class="w3-input" value="heb" id="lang_in"></td>
+        </tr>
+      </table>
+
+      <br>
+
+      <button onclick='myfunc.submit()' class="w3-btn w3-round w3-light-grey">OCRit</button>
+    </div>
+    </div>
+
+ </body>
+
+  <script src='uiclient.js'></script>
+  <script src='myfunc.js'></script>
+
+
+</html>
