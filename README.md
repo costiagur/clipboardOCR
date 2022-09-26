@@ -1,9 +1,8 @@
 # clipboardOCR
-Take an image of text from clipboard, OCR it, show result and allow to copy the text to clipboard.
-For example, select some part of a scanned pdf page, copy it to clipboard and than run the script. OCR-ed result will be shown in an upper window. Then it can be copied to clipboard for further use. 
-In addition, the result can be passed to Notepad. It might be easier to manipulate results using Notepad.
+Take an image of text from clipboard, click OCRit button and get the text, as detected by Tesseract OCR.
+Note that tesseract is not included, and should be unpacked and places in a sub folder called "tesseract", which should be placed in the same folder where all the other application files are located. 
 The project uses several third party applications:
-1. Tesseract and pytesseract which do the OCR magic. Information can be found here: https://pypi.org/project/pytesseract/
-2. Pillow which does the magic of image manipulation. Information can be found here: https://pypi.org/project/Pillow/
+1. Tesseract and pytesseract - https://pypi.org/project/pytesseract/
+2. Pillow - https://pypi.org/project/Pillow/
 
 Enjoy.
