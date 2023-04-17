@@ -5,4 +5,6 @@ The project uses several third party applications:
 1. Tesseract and pytesseract - https://pypi.org/project/pytesseract/
 2. Pillow - https://pypi.org/project/Pillow/
 
+ClipOCRNotepad is a stand alone app, that is based on the above project. It catches the image in clipboard, ocrs it and shows the result in notepad.
+
 Enjoy.
