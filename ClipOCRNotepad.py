@@ -7,9 +7,21 @@ import pytesseract
 import os
 from tempfile import NamedTemporaryFile
 import subprocess
+import argparse
+import tkinter
+from tkinter import messagebox 
+from tkinter import simpledialog
 
-def myfunc():
+def myfunc(roll=0.0, bright=1.0):
 
+    root = tkinter.Tk()
+    root.attributes("-topmost", 1)
+    root.withdraw()
+    
+    root.deiconify()
+    asklang = simpledialog.askstring(title="ClipOCRtoNotepad",prompt='Input language',initialvalue="heb")
+    root.withdraw()
+    
     currentfolder =  os.path.dirname(os.path.realpath(__file__))
 
     tesdic = os.listdir(currentfolder + "\\tesseract")
@@ -19,68 +31,67 @@ def myfunc():
     pytesseract.pytesseract.tesseract_cmd = tesexec
 
     #os.environ['TESSDATA_PREFIX'] = currentfolder + "\\tesseract\\" + tesdic[0] + "\\tessdata"
+    
     tessdata = currentfolder + "\\tesseract\\" + tesdic[0] + "\\tessdata"
 
     img = ImageGrab.grabclipboard()
 
     if img == None:
         print("No image supplied")
-    #
+        root.deiconify()
+        messagebox.showerror(title="ClipOCRtoNotepad", message="No image supplied")
+        root.withdraw()
+        root.destroy()
+    
+    else:
+        img = ImageEnhance.Color(img).enhance(0.0)  # turn black and white
+        
+        if float(roll) != 0.0: #roll angle
+            img = img.rotate(float(roll))
+        else:
+            pass
+        #
 
-    img = ImageEnhance.Color(img).enhance(0.0)  # turn black and white
+        if float(bright) < 0.0 or float(bright) == 1.0: #brighten
+           pass
+        else:
+            img = ImageEnhance.Brightness(img).enhance(float(bright))
+        # 
+        
+        addconfigs = ' --tessdata-dir "' + tessdata + '"' #'--psm 11 pdf' + 
 
-    #if postdict['rollangle_in'] != "0": #roll
-    #    img = img.rotate(float(postdict['rollangle_in']))
-    #else:
-    #    pass
-    #
-
-    #enlargerate = int(postdict['enlarge_in'])
-
-    #img = img.resize((img.size[0]*enlargerate, img.size[1]*enlargerate)) #enlarge
-
-    #if float(postdict['brighten_in']) < 0.0 or float(postdict['brighten_in']) == 1.0: #brighten
-    #    pass
-    #else:
-    #    img = ImageEnhance.Brightness(img).enhance(float(postdict['brighten_in']))
-    # 
-
-    #if float(postdict['contrast_in']) < 0.0 or  float(postdict['contrast_in']) == 1.0: #contrast
-    #    pass
-    #else:
-    #    img = ImageEnhance.Contrast(img).enhance(float(postdict['contrast_in']))
-    #
-
-    addlang = ''
-
-    #if postdict['lang_in'] != '' and postdict['lang_in'].find('+',0,1) == -1: #prevent state of +'' or ++'...'
-    #    addlang = '+' + postdict['lang_in']
-    #
-    #elif postdict['lang_in'] != '':
-    #    addlang = postdict['lang_in']
-    #
-
-    #addconfigs = ''
-
-    #if postdict['configs_in'] != '':
-    #    addconfigs = ' ' + postdict['configs_in']
-    #
-
-    addconfigs = '--psm 11 pdf' + ' --tessdata-dir"' + tessdata + '"' 
-
-    ocr_str = pytesseract.image_to_string(img, lang='eng+heb', config=addconfigs) #do OCR #config=addconfigs
+        try:
+            ocr_str = pytesseract.image_to_string(img, lang=asklang, config=addconfigs) #do OCR #config=addconfigs
       
-    with NamedTemporaryFile("w",delete=False) as txtfile:
-        txtfile.write(ocr_str)
-        txtfile.seek(0)
-        print(txtfile.name)
+            with NamedTemporaryFile("w",delete=False) as txtfile:
+                txtfile.write(ocr_str)
+                txtfile.seek(0)
+                print(txtfile.name)
+            #
+
+            subprocess.call("Notepad " + txtfile.name)
+
+            os.unlink(txtfile.name)
+        #
+        except Exception as e:
+            root.deiconify()
+            messagebox.showerror(title="ClipOCRtoNotepad", message=e)
+            root.withdraw()
+        #
+
+        else:
+            return ocr_str
+        
+        finally:
+            root.destroy()
+
     #
+#   
 
-    subprocess.call("Notepad " + txtfile.name)
+parser = argparse.ArgumentParser()
+parser.add_argument("--roll", help="optional roll angle. float.", type=float)
+parser.add_argument("--bright", help="optional brighten rate higher than 1.0. float.", type=float)
 
-    os.unlink(txtfile.name)
+args = parser.parse_args()
 
-    return ocr_str
-#
-
-myfunc()
+myfunc(args.roll if args.roll else 0.0, args.bright if args.bright else 1.0)
