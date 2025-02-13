@@ -23,17 +23,10 @@ def myfunc(roll=0.0, bright=1.0):
     root.withdraw()
     
     currentfolder =  os.path.dirname(os.path.realpath(__file__))
+    #tesdic = os.listdir(currentfolder + "\\tesseract")
 
-    tesdic = os.listdir(currentfolder + "\\tesseract")
-
-    tesexec = currentfolder + "\\tesseract\\" + tesdic[0] + "\\tesseract.exe"
-
-    pytesseract.pytesseract.tesseract_cmd = tesexec
-
-    #os.environ['TESSDATA_PREFIX'] = currentfolder + "\\tesseract\\" + tesdic[0] + "\\tessdata"
-    
-    tessdata = currentfolder + "\\tesseract\\" + tesdic[0] + "\\tessdata"
-
+    pytesseract.pytesseract.tesseract_cmd = currentfolder + "\\tesseract\\Tesseract-OCR\\tesseract.exe"
+   
     img = ImageGrab.grabclipboard()
 
     if img == None:
@@ -58,10 +51,10 @@ def myfunc(roll=0.0, bright=1.0):
             img = ImageEnhance.Brightness(img).enhance(float(bright))
         # 
         
-        addconfigs = ' --tessdata-dir "' + tessdata + '"' #'--psm 11 pdf' + 
+        addconfigs = ' --tessdata-dir ' + currentfolder + r'\tesseract\Tesseract-OCR\tessdata' + ' --psm 11' #configurations 
 
         try:
-            ocr_str = pytesseract.image_to_string(img, lang=asklang, config=addconfigs) #do OCR #config=addconfigs
+            ocr_str = pytesseract.image_to_string(img, lang=asklang, config=addconfigs) #do OCR
       
             with NamedTemporaryFile("w",delete=False) as txtfile:
                 txtfile.write(ocr_str)
